@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UpdatedVersionFilelogger
 {
-    internal class Class1
+    public class DefaultDataProvider : IDateProvider
     {
+        public static IDateProvider Instance => new DefaultDataProvider();
+
+        public DateTime Today => DateTime.Today;
     }
 }
