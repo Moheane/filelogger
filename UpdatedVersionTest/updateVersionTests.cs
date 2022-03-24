@@ -19,10 +19,12 @@ namespace UpdatedVersionTest
 
         private const string Test_message = "Ramahadi_log_message";
 
+        private static readonly DateTime Saturday = new DateTime(2020, 2, 8);
+        private static readonly DateTime Sunday = new DateTime(2020, 2, 9);
         private DateTime week_day => new DateTime(2020, 2, 13);
 
         private string default_log_filename => $"log{week_day:yyyyMMdd}.txt";
-
+        private string default_log_weeekend_filename => "weekend.txt";
 
         public UpdatedVersionTest()
         {
@@ -64,6 +66,40 @@ namespace UpdatedVersionTest
             File_System_Mock.Verify(fs => fs.Append(default_log_filename, Test_message), Times.Once);
         }
 
+
+
+        [TestMethod]
+        public void use_IdateProvider_as_default()
+        {
+            Logger.Log(Test_message);
+
+            Date_Provider_Mock.VerifyGet(dp => dp.Today, Times.AtLeastOnce);
+            File_System_Mock.Verify(fs => fs.Append(default_log_filename, Test_message), Times.Once);
+        }
+
+        [TestMethod]
+        public void logs_to_weekend_on_saturdays()
+        {
+            
+            Date_Provider_Mock.Setup(dp => dp.Today).Returns(Saturday);
+
+            Logger.Log(Test_message);
+
+            Date_Provider_Mock.VerifyGet(dp => dp.Today, Times.AtLeastOnce);
+            File_System_Mock.Verify(fs => fs.Append(default_log_weeekend_filename, Test_message), Times.Once);
+        }
+
+        [TestMethod]
+        public void logs_to_weekend_on_sunday()
+        {
+            
+            Date_Provider_Mock.Setup(dp => dp.Today).Returns(Sunday);
+
+            Logger.Log(Test_message);
+
+            Date_Provider_Mock.VerifyGet(dp => dp.Today, Times.AtLeastOnce);
+            File_System_Mock.Verify(fs => fs.Append(default_log_weeekend_filename, Test_message), Times.Once);
+        }
 
 
 
