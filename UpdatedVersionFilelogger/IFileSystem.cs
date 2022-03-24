@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UpdatedVersionFilelogger
 {
-    internal class Class3
+    public interface IFileSystem
     {
+        void Append(string path, string message);
+        void Create(string path);
+        bool Exists(string path);
+        DateTime GetLastWriteTime(string path);
+        void Rename(string currentPath, string newPath);
     }
 }
