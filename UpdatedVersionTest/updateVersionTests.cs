@@ -187,7 +187,59 @@ namespace UpdatedVersionTest
             File_System_Mock.Verify(f => f.Append(default_log_weeekend_filename, Test_message), Times.Once);
         }
 
+        [TestMethod]
+        public void rename_log_if_exists_from_old_saturday()
+        {
+            DateTime OldDate = new DateTime(2020, 1, 18);
+            var OldDateFileName = $"weekend-{OldDate:yyyyMMdd}.txt";
 
+
+            Date_Provider_Mock.Setup(d => d.Today).Returns(Saturday);
+
+           
+            File_System_Mock.Setup(f => f.Exists(default_log_weeekend_filename)).Returns(true);
+
+
+            File_System_Mock.Setup(f => f.GetLastWriteTime(default_log_weeekend_filename)).Returns(OldDate);
+
+    
+            Logger.Log(Test_message);
+
+
+            File_System_Mock.Verify(f => f.Rename(default_log_weeekend_filename, OldDateFileName), Times.Once, "The File was not renamed as expected!");
+
+           
+            File_System_Mock.Verify(f => f.Append(default_log_weeekend_filename, Test_message), Times.Once, "The message was not appended to the new Weekend.txt file!");
+
+        }
+
+
+        [TestMethod]
+        public void rename_log_if_exists_from_old_sunday()
+        {
+            
+            DateTime OldDate = new DateTime(2020, 1, 19);
+            var OldDateFileName = $"weekend-{OldDate:yyyyMMdd}.txt";
+
+            
+            Date_Provider_Mock.Setup(d => d.Today).Returns(Saturday);
+
+            
+            File_System_Mock.Setup(f => f.Exists(default_log_weeekend_filename)).Returns(true);
+
+          
+            File_System_Mock.Setup(f => f.GetLastWriteTime(default_log_weeekend_filename)).Returns(OldDate);
+
+           
+            Logger.Log(Test_message);
+
+           
+            File_System_Mock.Verify(f => f.Rename(default_log_weeekend_filename, OldDateFileName), Times.Once, "The File was not renamed as expected!");
+
+            
+            File_System_Mock.Verify(f => f.Append(default_log_weeekend_filename, Test_message), Times.Once, "The message was not appended to the new Weekend.txt file!");
+
+        }
 
     }
 }
