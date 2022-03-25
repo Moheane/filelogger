@@ -1,3 +1,7 @@
+
+#Coding Challenge
+The assignment was to write a Unit test for the logger functions using C# and Visual Studio
+
 # File logger
 
 ## What does the application do?
