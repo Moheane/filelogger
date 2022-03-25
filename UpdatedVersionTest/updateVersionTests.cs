@@ -141,6 +141,52 @@ namespace UpdatedVersionTest
             File_System_Mock.Verify(f => f.Append(default_log_weeekend_filename, Test_message), Times.Once);
         }
 
+        [TestMethod]
+        public void append_message_and_create_file_on_saturday_if_weekend_log_not_exists()
+        {
+
+            File_System_Mock.Setup(f => f.Exists(default_log_weeekend_filename)).Returns(false);
+
+
+            Date_Provider_Mock.Setup(d => d.Today).Returns(Saturday);
+
+
+            Logger.Log(Test_message);
+
+
+            Date_Provider_Mock.VerifyGet(d => d.Today, Times.AtLeastOnce);
+
+
+            File_System_Mock.Verify(f => f.Exists(default_log_weeekend_filename), Times.AtLeastOnce);
+
+            File_System_Mock.Verify(f => f.Create(default_log_weeekend_filename), Times.Once);
+
+            File_System_Mock.Verify(f => f.Append(default_log_weeekend_filename, Test_message), Times.Once);
+        }
+
+        [TestMethod]
+        public void append_message_and_create_file_on_sunday_if_weekend_log_not_exists()
+        {
+
+            File_System_Mock.Setup(f => f.Exists(default_log_weeekend_filename)).Returns(false);
+
+
+            Date_Provider_Mock.Setup(d => d.Today).Returns(Sunday);
+
+
+            Logger.Log(Test_message);
+
+
+            Date_Provider_Mock.VerifyGet(d => d.Today, Times.AtLeastOnce);
+
+
+            File_System_Mock.Verify(f => f.Exists(default_log_weeekend_filename), Times.AtLeastOnce);
+
+            File_System_Mock.Verify(f => f.Create(default_log_weeekend_filename), Times.Once);
+
+            File_System_Mock.Verify(f => f.Append(default_log_weeekend_filename, Test_message), Times.Once);
+        }
+
 
 
     }
